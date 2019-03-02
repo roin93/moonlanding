@@ -1,0 +1,102 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<!-- the small non-readable p5 file -->
+	<script language="javascript" type="text/javascript" src="libraries/p5.min.js"></script>
+	<!-- the full readable p5 file -->
+	<!--<script language="javascript" type="text/javascript" src="libraries/p5.js"></script>-->
+
+	<!-- uncomment lines below to include extra p5 libraries -->
+	<script language="javascript" src="libraries/p5.dom.min.js"></script>
+	<!--<script language="javascript" src="libraries/p5.sound.min.js"></script>-->
+	<!-- or -->
+	<!--<script language="javascript" src="libraries/p5.dom.js"></script>-->
+	<!--<script language="javascript" src="libraries/p5.sound.js"></script>-->
+	
+	
+	<script language="javascript" type="text/javascript" src="sketch.js"></script>
+	<!-- this line removes any default padding and style. you might only need one of these values set. -->
+	<style> 
+		body {
+			padding: 0;
+			margin: 0;
+		}
+		
+		#top {
+			width: 100%;
+			height: 200px;
+		}
+		.left {
+			display: block;
+			width: 100%;
+		}
+		.radio_left {
+			float:left;
+			width: 50%;
+			display: block;
+		}
+		.radio_right {
+			display: block;
+			width: 50%;
+			float: right;
+		}
+		.right {
+			display: block;
+			width: 100%;
+		}
+		#params, #data, #algos {
+			float:left;
+			width: 30%;
+			height: 100%;
+		}
+		
+		.Chart {
+			float: left;
+			position: relative;
+		}
+		.Chart div.chartClass {
+			left: 0px;
+			top: 0px;
+		}
+	</style>
+	<!-- Erzeugen von Ergebnis-Graphen -->
+	<script src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="drawGraph.js"></script>
+	<script type="text/javascript">
+		//setup1();
+	</script>
+</head>
+
+<body>
+	<h1>Mondlandung</h1>
+	<div id="options">
+		<fieldset id="params">
+			<input type="checkbox" name="BegrenzterTreibstoff" />
+			<input type="checkbox" name="VersetzeZiele" />
+			<input type="checkbox" name="Steuerduesen" />
+			<input type="checkbox" name="winds" />
+			<input type="checkbox" name="multiLandZone" />
+		</fieldset>
+		<button id="start" value="Starte das Spiel">Starte das Spiel</button>
+	</div>
+	<div id="playarea"></div>
+	<div id="graphs">
+		<div class="Chart">
+			<div class="chartClass" id="Treibstoffverbrauch"></div>
+		</div>
+		<div class="Chart">
+			<div class="chartClass" id="Höhenverlauf"></div>
+		</div>
+		<div class="Chart">
+			<div class="chartClass" id="Schubkontrolle"></div>
+		</div>
+		<div class="Chart">
+			<div class="chartClass" id="Geschwindigkeit"></div>
+		</div>
+		
+		<!--<div class="Chart">
+			<div class="chartClass" id="OtherCharts"></div>
+		</div>-->
+	</div>
+</body>
+</html>
