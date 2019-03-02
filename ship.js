@@ -6,34 +6,34 @@ class Ship {
 		// Engine
 		this.Engine = new Engine(10000, 10);
 		this.RCS = new Engine(10, 0.1);
+		this.engineActive = false;
+		// We need to save if rcs is firering clockwise or anti-clockwise
+		// 1  = clockwise
+		// -1 = anti-clockwise
+		// 0  = off
+		this.RCSActive = 0;
 		
 		// Fuel
 		this.fuelWeight = fuelWeight;
+		
+		this.fuel = 0;
+		this.velocity = [0,0];
+		// orientation of 0 is engine pointing to the bottom.
+		this.orientation = 0;
+		this.orientationChange = 0;
+		this.position.x = 0;
+		this.position.y = 0;
 	}
 	
 	get weight() {
 		return this.weightShip + this.fuel * this.fuelWeight;
-	}
+	};
 	
-	this.fuel = 0;
-	this.velocity = [0,0];
-	// orientation of 0 is engine pointing to the bottom.
-	this.orientation = 0;
-	this.orientationChange = 0;
-	this.position.x = 0;
-	this.position.y = 0;
 	get height() {
 		return this.position.y;
-	}
+	};
 	
-	this.engineActive = false;
-	// We need to save if rcs is firering clockwise or anti-clockwise
-	// 1  = clockwise
-	// -1 = anti-clockwise
-	// 0  = off
-	this.RCSActive = 0;
-	
-	this.setStartingCondition = function(fuel, vel, height, orientation, orientationChange) {
+	setStartingCondition(fuel, vel, height, orientation, orientationChange) {
 		this.fuel = fuel;
 		this.velocity = vel;
 		this.height = height;
@@ -41,28 +41,28 @@ class Ship {
 		this.orientationChange = orientationChange;
 	}
 	
-	this.startEngine = function() {
+	startEngine() {
 		engineActive = true;
 	}
 	
-	this.stopEngine = function() {
+	stopEngine() {
 		engineActive = false;
 	}
 	
-	this.rotateLeft = function() {
+	rotateLeft() {
 		RCSActive = -1;
 	}
 	
-	this.rotateRight = function() {
+	rotateRight() {
 		RCSActive = 1;
 	}
 	
-	this.stopRCS = function() {
+	stopRCS() {
 		RCSActive = 0;
 	}
 	
 	// calculate the changes of internal values for the given time in seconds.
-	this.calculateChanges = function(time) {
+	calculateChanges(time) {
 		let fuelConsumption = 0;
 		let thrustEngine = 0;
 		let velocityChange = 0;

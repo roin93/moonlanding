@@ -42,12 +42,13 @@ function setup() {
 	//#####
 	//## Setting currentValues to the starting values.
 	//#####
-	currentHeight = startingHeight;
+	/*currentHeight = startingHeight;
 	currentVelocity = startingVelocity;
 	currentOrientation = startingOrientation;
 	currentOrientationChange = 0;
 	currentFuel = startingFuel;
 	currentWeight = calculateWeight();
+	*/
 }
 
 function windowResized() {
@@ -56,9 +57,4 @@ function windowResized() {
 
 function draw() {
 	background(0);
-}
-
-// Calculate the weight of the ship
-function calculateWeight() {
-	return weightShip + currentFuel * weightFuel;
 }
