@@ -46,10 +46,14 @@
 			display: block;
 			width: 100%;
 		}
-		#params, #data, #algos {
+		#options {
 			float:left;
 			width: 30%;
-			height: 100%;
+			//height: 100%;
+		}
+		#playarea {
+			float: right;
+			width: 70%;
 		}
 		
 		.Chart {
@@ -73,11 +77,74 @@
 	<h1>Mondlandung</h1>
 	<div id="options">
 		<fieldset id="params">
-			<input type="checkbox" name="BegrenzterTreibstoff" />
-			<input type="checkbox" name="VersetzeZiele" />
-			<input type="checkbox" name="Steuerduesen" />
-			<input type="checkbox" name="winds" />
-			<input type="checkbox" name="multiLandZone" />
+			<h2>Spielschwierigkeit (aktuell deaktiviert)</h2>
+			<input type="checkbox" name="BegrenzterTreibstoff" /><label>Begrenzter Treibstoff</label> <br />
+			<input type="checkbox" name="VersetzeZiele" /><label>Seitlich versetze Ziele</label> <br />
+			<input type="checkbox" name="Steuerduesen" /><label>Steuerdüsen</label> <br />
+			<input type="checkbox" name="winds" /><label>Wind</label> <br />
+			<input type="checkbox" name="multiLandZone" /><label>Mehrere Landezonen</label> <br />
+		</fieldset>
+		<fieldset id="startingValues">
+			<h2>Schiffeigenschaften</h2>
+			<p>
+				<label>Gewicht des Schiffs:</label>
+				<input type="text" name="shipWeight" value="2500" /> kg
+			</p>
+			<p>
+				<label>Stabilität (Impakt):</label>
+				<input type="text" name="impactVelocity" value="12" /> m/s
+			</p>
+		</fieldset>
+		<fieldset id="engine">
+			<p>
+				<label>Schub des Haupttriebwerks:</label>
+				<input type="text" name="thrustEngine" value="30000" /> N
+			</p>
+			<p>
+				<label>Treibstoffverbrauch des Haupttriebwerks:</label>
+				<input type="text" name="ConsumptionEngine" value="10" /> units/s
+			</p>
+		</fieldset>
+		<fieldset id="RCS">
+			<p>
+				<label>Schub der RCS Steuerdüsen:</label>
+				<input type="text" name="thrustRCS" value="100" /> N
+			</p>
+			<p>
+				<label>Treibstoffverbrauch der Steuerdüsen:</label>
+				<input type="text" name="ConsumptionRCS" value="0.1" /> units/s
+			</p>
+		</fieldset>
+		<fieldset id="Szenario">
+			<h2>Szenario-Optionen</h2>
+			<p>
+				<label>Anziehungskraft:</label>
+				<input type="text" name="gravity" value="1.635" /> m/s^2
+			</p>
+			<p>
+				<label>Treibstoffmenge:</label>
+				<input type="text" name="Treibstoffmenge" value="1000" /> units
+			</p>
+			<p>
+				<label>Anfangsgeschwindigkeit:</label>
+				<input type="text" name="startingVelocity" value="2000" /> m/s
+			</p>
+			<p>
+				<label>Anfangshöhe:</label>
+				<input type="text" name="startingHeight" value="10000" /> m
+			</p>
+			<p>
+				<label>Anfangsorientierung:</label>
+				<input type="text" name="startingOrientation" value="0" /> °
+			</p>
+			<p>
+				<label>Zielhöhe (y):</label>
+				<input type="text" name="targetY" value="0" /> m
+			</p>
+			<p>
+				<label>Zielbreite (x):</label>
+				<input type="text" name="targetX" value="10" /> m
+			</p>
 		</fieldset>
 		<button id="start" value="Starte das Spiel">Starte das Spiel</button>
 	</div>

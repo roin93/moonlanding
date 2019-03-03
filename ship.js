@@ -62,6 +62,7 @@ class Ship {
 	}
 	
 	// calculate the changes of internal values for the given time in seconds.
+	// will just produce accurate results if called with small values for time because of approximate linearization.
 	calculateChanges(time) {
 		let fuelConsumption = 0;
 		let thrustEngine = 0;
