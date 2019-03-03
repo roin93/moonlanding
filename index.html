@@ -88,65 +88,65 @@
 			<h2>Schiffeigenschaften</h2>
 			<p>
 				<label>Gewicht des Schiffs:</label>
-				<input type="text" name="shipWeight" value="2500" /> kg
+				<input type="number" name="shipWeight" min="1" max="100000" value="2500" /> kg
 			</p>
 			<p>
 				<label>Stabilität (Impakt):</label>
-				<input type="text" name="impactVelocity" value="12" /> m/s
+				<input type="number" name="impactVelocity" min="0.1" max="30" value="12" /> m/s
 			</p>
 		</fieldset>
 		<fieldset id="engine">
 			<p>
 				<label>Schub des Haupttriebwerks:</label>
-				<input type="text" name="thrustEngine" value="30000" /> N
+				<input type="number" name="thrustEngine" min="100" max="1000000" value="30000" /> N
 			</p>
 			<p>
 				<label>Treibstoffverbrauch des Haupttriebwerks:</label>
-				<input type="text" name="ConsumptionEngine" value="10" /> units/s
+				<input type="number" name="ConsumptionEngine" min="0.01" max="1000" value="10" /> units/s
 			</p>
 		</fieldset>
 		<fieldset id="RCS">
 			<p>
 				<label>Schub der RCS Steuerdüsen:</label>
-				<input type="text" name="thrustRCS" value="100" /> N
+				<input type="number" name="thrustRCS" min="100" max="1000000" value="100" /> N
 			</p>
 			<p>
 				<label>Treibstoffverbrauch der Steuerdüsen:</label>
-				<input type="text" name="ConsumptionRCS" value="0.1" /> units/s
+				<input type="number" name="ConsumptionRCS" min="0.01" max="1000" value="0.1" /> units/s
 			</p>
 		</fieldset>
 		<fieldset id="Szenario">
 			<h2>Szenario-Optionen</h2>
 			<p>
 				<label>Anziehungskraft:</label>
-				<input type="text" name="gravity" value="1.635" /> m/s^2
+				<input type="number" name="gravity" min="0.1" max="100" value="1.635" /> m/s^2
 			</p>
 			<p>
 				<label>Treibstoffmenge:</label>
-				<input type="text" name="Treibstoffmenge" value="1000" /> units
+				<input type="number" name="Treibstoffmenge" min="1" max="100000" value="1000" /> units
 			</p>
 			<p>
 				<label>Anfangsgeschwindigkeit:</label>
-				<input type="text" name="startingVelocity" value="2000" /> m/s
+				<input type="number" name="startingVelocity" min="0" max="100000" value="2000" /> m/s
 			</p>
 			<p>
 				<label>Anfangshöhe:</label>
-				<input type="text" name="startingHeight" value="10000" /> m
+				<input type="number" name="startingHeight" min="100" max="1000000" value="10000" /> m
 			</p>
 			<p>
 				<label>Anfangsorientierung:</label>
-				<input type="text" name="startingOrientation" value="0" /> °
+				<input type="number" name="startingOrientation" min="0" max="359" value="0" /> °
 			</p>
 			<p>
 				<label>Zielhöhe (y):</label>
-				<input type="text" name="targetY" value="0" /> m
+				<input type="number" name="targetY" min="0" max="2000" value="0" /> m
 			</p>
 			<p>
 				<label>Zielbreite (x):</label>
-				<input type="text" name="targetX" value="10" /> m
+				<input type="number" name="targetX" min="-20000" max="20000" value="10" /> m
 			</p>
 		</fieldset>
-		<button id="start" value="Starte das Spiel">Starte das Spiel</button>
+		<button id="start" value="Starte das Spiel" onclick="start()">Starte das Spiel</button>
 	</div>
 	<div id="playarea"></div>
 	<div id="graphs">
