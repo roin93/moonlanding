@@ -76,29 +76,29 @@
 <body>
 	<h1>Mondlandung</h1>
 	<div id="options">
-		<fieldset id="params">
+		<!--<fieldset id="params"> 
 			<h2>Spielschwierigkeit (aktuell deaktiviert)</h2>
 			<input type="checkbox" name="BegrenzterTreibstoff" /><label>Begrenzter Treibstoff</label> <br />
 			<input type="checkbox" name="VersetzeZiele" /><label>Seitlich versetze Ziele</label> <br />
 			<input type="checkbox" name="Steuerduesen" /><label>Steuerdüsen</label> <br />
 			<input type="checkbox" name="winds" /><label>Wind</label> <br />
 			<input type="checkbox" name="multiLandZone" /><label>Mehrere Landezonen</label> <br />
-		</fieldset>
+		</fieldset> -->
 		<fieldset id="startingValues">
 			<h2>Schiffeigenschaften</h2>
 			<p>
 				<label>Gewicht des Schiffs:</label>
-				<input type="number" name="shipWeight" min="1" max="100000" value="2500" /> kg
+				<input type="number" name="shipWeight" min="1" max="100000" step="100" value="2500" /> kg
 			</p>
 			<p>
 				<label>Stabilität (Impakt):</label>
-				<input type="number" name="impactVelocity" min="0.1" max="30" value="12" /> m/s
+				<input type="number" name="impactVelocity" min="0.1" max="30" step="0.1" value="12" /> m/s
 			</p>
 		</fieldset>
 		<fieldset id="engine">
 			<p>
 				<label>Schub des Haupttriebwerks:</label>
-				<input type="number" name="thrustEngine" min="100" max="100000000" value="250000" /> N
+				<input type="number" name="thrustEngine" min="100" max="100000000" step="1000" value="210000" /> N
 			</p>
 			<p>
 				<label>Treibstoffverbrauch des Haupttriebwerks:</label>
@@ -108,7 +108,7 @@
 		<fieldset id="RCS">
 			<p>
 				<label>Schub der RCS Steuerdüsen:</label>
-				<input type="number" name="thrustRCS" min="10" max="100000000" value="400" /> N
+				<input type="number" name="thrustRCS" min="10" max="100000000" step="1000" value="2500" /> N
 			</p>
 			<p>
 				<label>Treibstoffverbrauch der Steuerdüsen:</label>
@@ -123,19 +123,19 @@
 			</p>
 			<p>
 				<label>Treibstoffmenge:</label>
-				<input type="number" name="Treibstoffmenge" min="1" max="100000" value="1000" /> units
+				<input type="number" name="Treibstoffmenge" min="1" max="100000" step="10" value="750" /> units
 			</p>
 			<p>
 				<label>Anfangsgeschwindigkeit:</label>
-				<input type="number" name="startingVelocity" min="0" max="100000" value="500" /> m/s
+				<input type="number" name="startingVelocity" min="0" max="100000" step="50" value="500" /> m/s
 			</p>
 			<p>
 				<label>Anfangshöhe:</label>
-				<input type="number" name="startingHeight" min="100" max="1000000" value="10000" /> m
+				<input type="number" name="startingHeight" min="100" max="1000000" step="500" value="10000" /> m
 			</p>
 			<p>
 				<label>Anfangsorientierung:</label>
-				<input type="number" name="startingOrientation" min="0" max="359" value="0" /> °
+				<input type="number" name="startingOrientation" min="-180" max="180" step="5" value="0" /> °
 			</p>
 			<p>
 				<label>Zielhöhe (y):</label>
@@ -143,7 +143,11 @@
 			</p>
 			<p>
 				<label>Zielbreite (x):</label>
-				<input type="number" name="targetX" min="-20000" max="20000" value="10" /> m
+				<input type="number" name="targetX" min="-20000" max="20000" value="100" /> m
+			</p>
+			<p>
+				<label>Große der Landezone (x):</label>
+				<input type="number" name="targetPrecision" min="0.5" max="2000" value="10" /> m
 			</p>
 		</fieldset>
 		<button id="start" value="Starte das Spiel" onclick="start()">Starte das Spiel</button>

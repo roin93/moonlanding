@@ -16,11 +16,13 @@ var gameRunning = false;
 let startingHeight;
 let targetX;
 let targetY;
+let targetPrecision;
 
 let shipSize = 40;
 
 var lastDraw;
 var currentOrientation = 0;
+
 
 
 //p5 function which is called after loading all html and js-data.
@@ -32,6 +34,7 @@ function setup() {
 		canvas.parent('playarea');
 		background(0);
 		noStroke(); // no other lines.
+		textAlign(CENTER, CENTER);
 	}
 	noLoop();
 }
@@ -41,14 +44,19 @@ function windowResized() {
 }
 
 function draw() {
-	if(gameRunning === false)
+	if(!gameRunning)
 		return;
 	
 	background(0);
 	
+	displayText();
+	
+	push();
+	fill(255);
+	
 	// calculate current position
-	y = map(ship.height, startingHeight, 0, 0, height - shipSize);
-	x = map(ship.position.x, -5000, 5000, 0, width - shipSize); 
+	let y = map(ship.height, startingHeight, 0, 0, height - shipSize);
+	let x = map(ship.position.x, -5000, 5000, 0, width - shipSize); 
 	
 	// save time which will be needed for this frame.
 	let timeElapsed = millis() - lastDraw;
@@ -58,7 +66,7 @@ function draw() {
 	let orientationChange = currentOrientation - ship.orientation;
 	
 	translate(x, y)
-	rotate(orientationChange);
+	rotate(radians(orientationChange));
 	beginShape();
 	{
 		// top
@@ -80,6 +88,14 @@ function draw() {
 	endShape(CLOSE);
 	//triangle(0, 0, -20, 20, 20, 20);
 	//rect(-5, 20, 10, 15);
+	pop();
+	
+	let checked = checkForEnd();
+	if(checked != 0)
+	{
+		endGame(checked == 1);
+	}
+	
 }
 
 function start() {
@@ -93,6 +109,7 @@ function start() {
 	currentOrientation = startingOrientation;
 	targetX					= parseFloat(document.querySelector('[name="targetX"]').value);
 	targetY					= parseFloat(document.querySelector('[name="targetY"]').value);
+	targetPrecision         = parseFloat(document.querySelector('[name="targetPrecision"]').value);
 	
 	let thrustEngine		= parseFloat(document.querySelector('[name="thrustEngine"]').value);
 	let consumptionEngine	= parseFloat(document.querySelector('[name="ConsumptionEngine"]').value);
@@ -110,8 +127,68 @@ function start() {
 	lastDraw = millis();
 }
 
+function checkForEnd() {
+	if(ship.height > targetY)
+		return 0;
+	
+	// next to ground.
+	// Upside down were nice.
+	if(ship.orientation > 15 || ship.orientation < -15)
+		return -1;
+	
+	// not crashed?
+	if(sqrt(ship.velocity.x * ship.velocity.x + ship.velocity.y * ship.velocity.y) < ship.impactVelocity)
+		return 1;
+	
+	// next to the target?
+	if(ship.height <= targetY && abs(ship.position.x - targetX) <= targetPrecision)
+		return 1;
+	
+	// did not hit the target
+	return -1;
+}
+
+function endGame(won) {
+	// print Message on playarea
+	push();
+	translate(width / 2, height / 2);
+	
+	textSize(30);
+	if(won)
+	{
+		fill(20,200,20);
+		text('Game won!', 0,0);
+		console.log('won');
+	} else {
+		fill(200,20,20);
+		text('Crashed!', 0,0);
+		console.log('crashed');
+	}
+	pop();
+	gameRunning = false;
+}
+
+function displayText() {
+	push();
+	translate(width * 0.85, height * 0.05);
+	fill(255);
+	// Aktuelle Höhe:
+	textSize(14);
+	text('Hoehe: ' + str(int(ship.height)) + ' m', 0, 0);
+	// Geschwindigkeit
+	text('Geschwindigkeit x: ' + str(int(ship.velocity.x)) + ' m/s', 0, 15);
+	text('Geschwindigkeit y: ' + str(int(ship.velocity.y)) + ' m/s', 0, 30);
+	// Treibstoff:
+	text('Treibstoffmenge: ' + str(int(ship.fuel)) + ' units', 0, 45);
+	
+	pop();
+}
+
 // listener
 function keyPressed() {
+	if(!gameRunning)
+		return false;
+	
 	if(keyCode === LEFT_ARROW) {
 		ship.rotateLeft();
 	} else if(keyCode === RIGHT_ARROW) {
@@ -126,14 +203,17 @@ function keyPressed() {
 	}
 	
 	// prevent failures
-	return false;
+	//return false;
 }
 
 function keyReleased() {
+	if(!gameRunning)
+		return false;
+	
 	if(key === RIGHT_ARROW || key === LEFT_ARROW)
 		ship.stopRCS();
 	else
 		ship.stopEngine();
 	// prevent failures
-	return false;
+	//return false;
 }

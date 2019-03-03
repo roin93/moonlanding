@@ -41,23 +41,23 @@ class Ship {
 	}
 	
 	startEngine() {
-		engineActive = true;
+		this.engineActive = true;
 	}
 	
 	stopEngine() {
-		engineActive = false;
+		this.engineActive = false;
 	}
 	
 	rotateLeft() {
-		RCSActive = -1;
+		this.RCSActive = -1;
 	}
 	
 	rotateRight() {
-		RCSActive = 1;
+		this.RCSActive = 1;
 	}
 	
 	stopRCS() {
-		RCSActive = 0;
+		this.RCSActive = 0;
 	}
 	
 	// calculate the changes of internal values for the given time in seconds.
@@ -92,11 +92,15 @@ class Ship {
 		{
 			orientationChangeAcceleration = thrustRCS / weightMean;
 			this.orientation += this.orientationChange * time + orientationChangeAcceleration * time * time;
+			if(this.orientation > 180)
+				this.orientation - 360;
+			if(this.orientation < -180)
+				this.orientation + 360;
 			this.orientationChange += orientationChangeAcceleration * time;
 		}
 		
 		// Calculate the mean orientation for a linear acceleration vector.
-		let meanOrientation = (orientationBefore + this.orientation) / 2;
+		let meanOrientation = radians((orientationBefore + this.orientation) / 2);
 
 		let acc = -thrustEngine / weightMean;
 		
@@ -107,8 +111,6 @@ class Ship {
 			this.velocity.y += cos(meanOrientation) * acc * time + gravity * time;
 			//this.velocity += [sin(meanOrientation), cos(meanOrientation)] * acc * time + [0, -gravity] * time;
 		}
-		
-		
 		
 		let positionBefore = this.position;
 		// calculate position change
