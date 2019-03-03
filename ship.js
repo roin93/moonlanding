@@ -1,11 +1,11 @@
 class Ship {
-	constructor(fuel, fuelWeight) {
-		this.impactVelocity = 11;
-		this.weightShip = 1000;
+	constructor(fuelWeight, impact, weight, engineThrust, engineConsumption, rcsThrust, rcsConsumption) {
+		this.impactVelocity = impact;
+		this.weightShip = weight;
 		
 		// Engine
-		this.Engine = new Engine(10000, 10);
-		this.RCS = new Engine(10, 0.1);
+		this.Engine = new Engine(engineThrust, engineConsumption);
+		this.RCS = new Engine(rcsThrust, rcsConsumption);
 		this.engineActive = false;
 		// We need to save if rcs is firering clockwise or anti-clockwise
 		// 1  = clockwise
@@ -17,12 +17,11 @@ class Ship {
 		this.fuelWeight = fuelWeight;
 		
 		this.fuel = 0;
-		this.velocity = [0,0];
+		this.velocity = {x:0, y:0};
 		// orientation of 0 is engine pointing to the bottom.
 		this.orientation = 0;
 		this.orientationChange = 0;
-		this.position.x = 0;
-		this.position.y = 0;
+		this.position = {x:0, y:0};
 	}
 	
 	get weight() {
@@ -35,8 +34,8 @@ class Ship {
 	
 	setStartingCondition(fuel, vel, height, orientation, orientationChange) {
 		this.fuel = fuel;
-		this.velocity = vel;
-		this.height = height;
+		this.velocity.y = vel;
+		this.position.y = height;
 		this.orientation = orientation;
 		this.orientationChange = orientationChange;
 	}
@@ -74,16 +73,16 @@ class Ship {
 			fuelConsumption = this.Engine.consumption * time;
 			thrustEngine = this.Engine.thrust;
 		}
-		if(RCSActive !== 0)
+		if(this.RCSActive !== 0)
 		{
 			fuelConsumption += this.RCS.consumption * time;
-			thrustRCS = this.RCS.thrust * RCSActive;
+			thrustRCS = this.RCS.thrust * this.RCSActive;
 		}
 		
 		let weightBefore = this.weight;
 		this.fuel -= fuelConsumption;
 		// Calculate the mean weight which will be used for the mean acceleration calculation.
-		let weightMean = (weightBefore - this.weight) / 2;
+		let weightMean = (weightBefore + this.weight) / 2;
 		
 		// temporaly safe the orientation before any changes.
 		//let orientationChangeBefore = this.orientationChange;
@@ -99,11 +98,14 @@ class Ship {
 		// Calculate the mean orientation for a linear acceleration vector.
 		let meanOrientation = (orientationBefore + this.orientation) / 2;
 
+		let acc = -thrustEngine / weightMean;
+		
 		let velocityBefore = this.velocity;
 		// calculate the velocity change by thrust and weight change
 		{
-			let acc = thrustEngine / weightMean;
-			this.velocity += [sin(meanOrientation), cos(meanOrientation)] * acc * time + [0, -gravity] * time;
+			this.velocity.x += sin(meanOrientation) * acc * time;
+			this.velocity.y += cos(meanOrientation) * acc * time + gravity * time;
+			//this.velocity += [sin(meanOrientation), cos(meanOrientation)] * acc * time + [0, -gravity] * time;
 		}
 		
 		
@@ -111,7 +113,9 @@ class Ship {
 		let positionBefore = this.position;
 		// calculate position change
 		{
-			this.position += velocityBefore * time + [sin(meanOrientation), cos(meanOrientation)] * acc * time * time + [0, -gravity] * time * time;
+			this.position.x += velocityBefore.x * time + sin(meanOrientation) * acc * time * time;
+			this.position.y -= velocityBefore.y * time + cos(meanOrientation) * acc * time * time - gravity * time * time;
+			//this.position += velocityBefore * time + [sin(meanOrientation), cos(meanOrientation)] * acc * time * time + [0, -gravity] * time * time;
 		}
 	}
 }
