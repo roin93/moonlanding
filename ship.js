@@ -65,18 +65,9 @@ class Ship {
 	calculateChanges(time) {
 		let fuelConsumption = 0;
 		let thrustEngine = 0;
-		let velocityChange = 0;
-		let orientationChange = 0;
-		let orientationChangeChange = 0;
 		let thrustRCS = 0;
 		
-		let weightBefore = this.weight;
-		let velocityBefore = this.velocity;
-		let orientationChangeBefore = this.orientationChange;
-		let orientationBefore = this.orientation;
-		
-		let positionBefore = this.position;
-		
+		// Calculate the fuel consumption by the engine and RCS thrusters.
 		if(this.engineActive)
 		{
 			fuelConsumption = this.Engine.consumption * time;
@@ -88,46 +79,48 @@ class Ship {
 			thrustRCS = this.RCS.thrust * RCSActive;
 		}
 		
+		let weightBefore = this.weight;
 		this.fuel -= fuelConsumption;
-		
+		// Calculate the mean weight which will be used for the mean acceleration calculation.
 		let weightMean = (weightBefore - this.weight) / 2;
 		
-		// calculate the new orienatation and so on.
+		// temporaly safe the orientation before any changes.
+		//let orientationChangeBefore = this.orientationChange;
+		let orientationBefore = this.orientation;
+		let orientationChangeAcceleration = 0;
+		// calculate the new orienatation.
 		{
-			orientationChangeChange = thrustRCS / weightMean * time;
-			this.orientation += (this.orientationChange + orientationChangeChange) / 2 * time;
-			this.orientationChange += orientationChangeChange;
+			orientationChangeAcceleration = thrustRCS / weightMean;
+			this.orientation += this.orientationChange * time + orientationChangeAcceleration * time * time;
+			this.orientationChange += orientationChangeAcceleration * time;
 		}
 		
+		// Calculate the mean orientation for a linear acceleration vector.
+		let meanOrientation = (orientationBefore + this.orientation) / 2;
+
+		let velocityBefore = this.velocity;
 		// calculate the velocity change by thrust and weight change
 		{
 			let acc = thrustEngine / weightMean;
-			velocityChange = vel(acc, getMeanAngle(orientatioBefore, orientationChangeBefore, thrustRCS, time), [0, 0]);
-			// gravity acceleration
-			velocityChange += [0, -gravity * time * time];
-			this.velocity -= velocityChange;
+			this.velocity += [sin(meanOrientation), cos(meanOrientation)] * acc * time + [0, -gravity] * time;
 		}
 		
+		
+		
+		let positionBefore = this.position;
 		// calculate position change
 		{
-			// ufff
-			// normally: x = x0 + v*t + a * t*t
-			// now: x = x0 + v*t * a*t*t + a_ * t*t*t
-			// where a_ the change of acceleration over time is (sin / cos) of the angle
-			// problem the change of the angle is also accelerated by the rcs
-			// so a_ is something like sin/cos of (angle0 + angle_change * t)
+			this.position += velocityBefore * time + [sin(meanOrientation), cos(meanOrientation)] * acc * time * time + [0, -gravity] * time * time;
 		}
-		
-		this.height = 0;
 	}
 }
 
-var getMeanAngle = function(angle0, angleVelocity, angleAcceleration, time)
+/* var getMeanAngle = function(angle0, angleVelocity, angleAcceleration, time)
 {
 	let angle1 = angle0 + angleVelocity * time + angleAcceleration * time * time;
 	return (angle0 + angle1) / 2;
-}
+} */
 
-var vel = function(acc, angle, vel0) {
+/* var vel = function(acc, angle, vel0) {
 	return vel0 + [sin(angle), cos(angle)] * acc;
-}
+} */
