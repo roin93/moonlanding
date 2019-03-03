@@ -20,6 +20,7 @@ let targetY;
 let shipSize = 40;
 
 var lastDraw;
+var currentOrientation = 0;
 
 
 //p5 function which is called after loading all html and js-data.
@@ -46,15 +47,18 @@ function draw() {
 	background(0);
 	
 	// calculate current position
-	y = map(ship.height, startingHeight, 0, 0, (height-shipSize));
+	y = map(ship.height, startingHeight, 0, 0, height - shipSize);
+	x = map(ship.position.x, -5000, 5000, 0, width - shipSize); 
 	
 	// save time which will be needed for this frame.
 	let timeElapsed = millis() - lastDraw;
 	lastDraw = millis();
 	// call update for the ship
 	ship.calculateChanges(timeElapsed / 1000);
+	let orientationChange = currentOrientation - ship.orientation;
 	
-	translate(width / 2, y)
+	translate(x, y)
+	rotate(orientationChange);
 	beginShape();
 	{
 		// top
@@ -86,6 +90,7 @@ function start() {
 	let startingVelocity	= parseFloat(document.querySelector('[name="startingVelocity"]').value);
 	startingHeight			= parseFloat(document.querySelector('[name="startingHeight"]').value);
 	let startingOrientation	= parseFloat(document.querySelector('[name="startingOrientation"]').value);
+	currentOrientation = startingOrientation;
 	targetX					= parseFloat(document.querySelector('[name="targetX"]').value);
 	targetY					= parseFloat(document.querySelector('[name="targetY"]').value);
 	
